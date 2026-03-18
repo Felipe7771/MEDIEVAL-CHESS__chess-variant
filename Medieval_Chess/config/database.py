@@ -105,6 +105,7 @@ XEQUE = {
     black: False
 }
 
+# O tabuleiro possui 2 espaços a mais de linha e coluna para conter areas mortas do jogo para não ocorrer erros de indice fora da lista
 TABLE = [[
     {
         'material': space,
@@ -147,7 +148,7 @@ PART_TEAM = {
     white:[],
     black:[]
 }
-# {part: '', attacks: 0, y: '', x: ''}
+# {id: '',part: '', attacks: 0, y: '', x: ''}
 
 NAME_PLAYERS = {
     white:'',
