@@ -1,4 +1,4 @@
-CELL_WIDTH = 4
+CELL_WIDTH = 4 
 
 def render_cell(piece):
     return piece.center(CELL_WIDTH)
