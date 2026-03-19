@@ -38,3 +38,64 @@ Within the game, players can choose their names, and the black or white team wil
 <br>
 
 ## ♔ HOW TO PLAY ♕
+First of all, let's review SOME rules of traditional chess before presenting the new ideas:
+
+
+| Part | Name | Movement|
+|:----:|:----:|-------|
+| ♔ |King | 1 square in any direction|
+| ♕ |Queen | Orthogonal and diagonal |
+| ♖ | Tower | Orthogonal|
+| ♗ | Bishop | Diagonal |
+| ♘ | Knight | Jump in an L shape (2 squares to one side and 1 to the other)|
+
+
+| How to win? | Attack the king without any way for him to escape the attack (Checkmate).|
+|-------------|--------|
+|Illegal Movements| Moving pieces that leave your king under attack will result in the move being voided.
+
+<br>
+
+| Types of Ties |
+|---------------|
+|With no enemy movement, the king's house is attacked BUT the king is not attacked (Drowning)|
+|King vs. King|
+|King vs. King and Bishop|
+|King vs. King and Knight|
+
+<br>
+
+### NEW DYNAMICS ♙ ✧ ♤
+-----------
+
+Medieval chess uses the logic of adding new things to chess in order to avoid complicating the players' lives. Knowing that new dynamics can lead to this, ***some aspects of the original chess game are discarded or simplified*** to balance the difficulty.
+
+|  | What |
+|--|------|
+|***REMOVED***| Castling (♖ ♔)|
+|***REMOVED***| El passant (♙ ♙)|
+|***REMOVED***| Double initial move of the pawn (♙)|
+|***REMOVED***| Promotion of the Pawn to the end of the map (♙ ♕)|
+
+It might seem illogical to remove the pawn's promotion system when it reaches the end of the board, but this happened because another piece in particular will take over this __"promotion system"__...
+
+...Speaking of the *`PAWN`*, the most complicated piece in chess, its gameplay has also been simplified:
+<br>
+
+|Part|Name|Movement|
+|:----:|----|--------|
+| ♙  |Pawn| Move 1 square vertically or attack 1 square diagonally.|
+
+
+**IN SUMMARY**, <br>
+The Pawn can now move and attack from behind, which can be very useful for forming *`trenches on the board`* maybe…
+
+<br>
+
+### New part: <br> ***`The Jester ✧`*** *(The court jester)*
+---------
+
+<br>
+
+### New part: <br> ***`The Prince ♤`*** *(The successor)*
+---------
