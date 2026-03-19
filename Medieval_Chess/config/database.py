@@ -55,7 +55,7 @@ MATERIAL = {
 
 PART_MOVES_UNIT = {
     # Peão: ataca na diagonal 1 casa, anda para frente e para traz (nessa variante)
-    pawn: [( 1, 0), (-1, 0)
+    pawn: [( 1, 0), (-1, 0),
            ( 1,-1), ( 1, 1),
            (-1,-1), (-1, 1)],
     
@@ -124,11 +124,17 @@ COMBAT = [[
 SELECT = [[
     '' for _ in range(10)] for _ in range(10)]
 
+# variáveis de apoio de comunicação do código em indicar efeito gerado na tabela SELECT
+noSELECT=0
+focusSELECT=1
+noviewSELECTED=2
+viewSELECTED=3
+
 VIEW_SELECT = {
-    0:['',''],      # SEM SELEÇÃO
-    1:['[',']'],    # EM FOCO
-    2:['',''],      # SELEÇÃO INVISÍVEL
-    3:['>',' '],    # SELEÇÃO VISÍVEL
+    noSELECT:       ['',''],      # SEM SELEÇÃO
+    focusSELECT:    ['[',']'],    # EM FOCO
+    noviewSELECTED: ['',''],      # SELEÇÃO INVISÍVEL
+    viewSELECTED:['>',' '],    # SELEÇÃO VISÍVEL
 }
 
 QUANT_MOVES = {

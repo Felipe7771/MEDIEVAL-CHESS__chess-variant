@@ -56,7 +56,7 @@ def set_InitialPiecesTable():
             id_part = get_idPart(part,QUANT[part])
             
             set_partToTable(team, part, (1+i, j))
-            set_initial_PartTeam(team, id_part, (1+i, j))
+            set_initial_PartTeam(team, id_part, part, (1+i, j))
     
     # Peças Brancas
     team = db.white
@@ -66,9 +66,8 @@ def set_InitialPiecesTable():
             
             QUANT[part] += 1
             id_part = get_idPart(part,QUANT[part])
-            
-            set_partToTable(team, part, (8+i, j))
-            set_initial_PartTeam(team, id_part, (8+i, j))
+            set_partToTable(team, part, (8-i, j))
+            set_initial_PartTeam(team, id_part, part, (8-i, j))
             
             
 # 5. ID = 'material' + quant.inserida
