@@ -121,7 +121,17 @@ COMBAT = [[
     }
     for _ in range(10)] for _ in range(10)]
 
-total_QuantMoves = {
+SELECT = [[
+    '' for _ in range(10)] for _ in range(10)]
+
+VIEW_SELECT = {
+    0:['',''],      # SEM SELEÇÃO
+    1:['[',']'],    # EM FOCO
+    2:['',''],      # SELEÇÃO INVISÍVEL
+    3:['>',' '],    # SELEÇÃO VISÍVEL
+}
+
+QUANT_MOVES = {
     white: 0,
     black: 0
 }
@@ -161,17 +171,17 @@ TURNS = [
     white
 ]
 
-turn_id = 0
+ID_TURN = 0
 
 # Pontuação dos jogadores:
-score_game = {
+SCORE_GAME = {
     black: 0,
     white: 0
 }
 
 PART = {
     black: {
-        space:  '◼',
+        space:  '█',
         pawn:   '♟',
         rook:   '♜',
         jester: '✦',
@@ -182,7 +192,7 @@ PART = {
         king:   '♚'
     },
     white: {
-        space:  '◻',
+        space:  ' ',
         pawn:   '♙',
         rook:   '♖',
         jester: '✧',
@@ -194,7 +204,7 @@ PART = {
     }
 }
 
-HasCapture = False
+HAS_CAPTURE = False
 
 TYPE_END ={
     # O ITEM 0 SÓ EXISTE PARA EVITAR CONFLITO COM O CÓDIGO.

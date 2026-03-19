@@ -93,3 +93,95 @@ def set_initial_PartTeam(team, id, part, position):
         'x': x
     }
     db.PART_TEAM[team].append(DATA_PART)
+
+# setar dados ao replay para salvar estados antigos
+def set_replay(replay):
+    db.REPLAY[replay] = copy.deepcopy({
+        'XEQUE': {
+            db.white: db.XEQUE[db.white],
+            db.black: db.XEQUE[db.black]
+        },
+        'TABLE': db.TABLE,
+        'QUANT_MOVES': db.QUANT_MOVES,
+        'COMBAT': db.COMBAT,
+        'PART_TEAM': db.PART_TEAM,
+        'SCORE_GAME': db.SCORE_GAME
+    })
+
+# retornar o estado do replay de volta ao jogo
+def return_state_dataReplay(replay):
+    db.TABLE       = copy.deepcopy(db.REPLAY[replay]['TABLE'])
+    db.COMBAT      = copy.deepcopy(db.REPLAY[replay]['COMBAT'])
+    db.PART_TEAM  = copy.deepcopy(db.REPLAY[replay]['PART_TEAM'])
+    db.SCORE_GAME  = copy.deepcopy(db.REPLAY[replay]['SCORE_GAME'])
+    db.QUANT_MOVES  = copy.deepcopy(db.REPLAY[replay]['QUANT_MOVES'])
+
+    db.XEQUE[db.white] = db.REPLAY[replay]['XEQUE'][db.white]
+    db.XEQUE[db.black] = db.REPLAY[replay]['XEQUE'][db.black]
+    
+# limpar todo replay
+def empty_allReplay():
+    for replay in range(2):
+        db.REPLAY[replay] = {
+            'XEQUE': {
+                db.white: False,
+                db.black: False
+            },
+    
+            'TABLE': [[
+                {
+                    'material': db.space,
+                    'team':     db.noteam,
+                    'part':     db.space
+                }
+            for _ in range(10)] for _ in range(10)],
+    
+            'QUANT_MOVES': {
+                db.white: 0,
+                db.black: 0
+            },
+
+            'COMBAT': [[
+            {
+                db.white:{},
+                db.black:{}
+            }
+            for _ in range(10)] for _ in range(10)],
+
+            'PART_TEAM': {
+                db.white:[],
+                db.black:[]
+            },
+
+            'SCORE_GAME': {
+                db.black: 0,
+                db.white: 0
+            }
+        }
+
+# resetar jogo
+def reset_state():
+    # poupar linhas de limpamento de dados com funções pré-feitas
+    empty_allReplay()
+    
+    for replay in ['replay1', 'replay2']:
+        set_replay(replay)
+    
+    db.REPLAY = {
+        'replay1':{},
+        'replay2':{},   
+    }
+    
+    db.NAME_PLAYERS = {
+        db.white:'',
+        db.black:''
+    }
+
+    db.TURNS = [
+        db.white,
+        db.black,
+        db.white
+    ]
+
+    db.ID_TURN = 0
+    db.HAS_CAPTURE = False
