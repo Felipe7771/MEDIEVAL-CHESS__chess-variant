@@ -137,6 +137,8 @@ VIEW_SELECT = {
     viewSELECTED:['>',' '],    # SELEÇÃO VISÍVEL
 }
 
+FOCUS_POS = None
+
 QUANT_MOVES = {
     white: 0,
     black: 0
@@ -177,7 +179,7 @@ TURNS = [
     white
 ]
 
-ID_TURN = 0
+ID_TURN = 1
 
 # Pontuação dos jogadores:
 SCORE_GAME = {

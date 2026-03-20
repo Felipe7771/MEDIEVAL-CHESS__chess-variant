@@ -1,5 +1,13 @@
 import database as db
 import generation as genera
+import selection as select
+
+LINES_TURN = {
+    db.white: (7, 8),
+    db.black: (1, 2)
+}
+
+COO_LETTERS = ["","a","b","c","d","e","f","g","h"]
 
 # VIZUALIZAR MAPA
 # perguntar tipo da visão:
@@ -7,7 +15,9 @@ import generation as genera
 # choose_part: mapa + parte de texto do turno do jogador
 #                       tutorial de seleção
 #                       nome da peça + se possível movimento
-def view_table():
+def view_table(show_turn=False, attack_move=False):
+    ALLY = db.TURNS[db.ID_TURN]
+    
     TABLE = db.TABLE
     CELL_WIDTH = 4 
     
@@ -35,8 +45,20 @@ def view_table():
         
         # exibir linha
         print_line(board, CELL_WIDTH)
+        
+        if ((not show_turn) or (i not in LINES_TURN[ALLY])):
+            print()
+        else:
+            print_show_turn(i, ALLY, attack_move)
+        
         # possivelmente exibir interceção das linhas
         print_middle_lines(i, middle)
+        
+        if ((not show_turn) or (i not in LINES_TURN[ALLY]) and (i != 8)):
+            print()
+            
+        elif (i != 8):
+            print(" # |")
     
     # exibir fim da grade do tabuleiro
     print(bottom)
@@ -49,13 +71,13 @@ def render_cell(piece, CELL_WIDTH):
 def print_line(board, CELL_WIDTH):
     line = '│' + '│'.join(render_cell(p,CELL_WIDTH) for p in board) + '│'
     
-    print(line)
+    print(line,end='')
 
 # exibir interceção entre as linha
 def print_middle_lines(i, middle):
     # se o número da coluna lida não for a última linha de TABLE, exiba a interceção
     if i < db.game_Xlenght - 1:
-            print(middle)
+            print(middle,end='')
 
 def print_part(square_TABLE, i, j):
     part = square_TABLE['part']
@@ -96,9 +118,68 @@ def print_space(i, j):
     
     return str(first+(part*2)+last)
 
+def print_show_turn(i, ALLY, attack_move):
+    lines = {
+        'turn_moviment': {
+            db.white: 7,
+            db.black: 1
+        },
+        
+        'selection_describe': {
+            db.white: 8,
+            db.black: 2
+        }      
+    }
+    
+    # Exibição da mensagem de turno do jogador
+    if (i == lines['turn_moviment'][ALLY]):
+        print_turn_moviment(ALLY)
+        
+    # Exibição de seleção da casa escolhida
+    elif (i == lines['selection_describe'][ALLY]):
+        print_selection_describe(attack_move)
+    
+    else:
+        print()
+
+def print_turn_moviment(ALLY):
+    
+    NAME_PLAYER = db.NAME_PLAYERS[ALLY]
+    TIME = db.get_Key_byDictValue(db.TEAMID, ALLY)
+    
+    print(f" # || TURNO DE '{NAME_PLAYER.upper()}' ({TIME})")
+    
+def print_selection_describe(attacking_move):
+    PART, TEAM = select.getPartANDteamFocused()
+    pos = select.getCooFocused()
+    
+    EXTRA = '➔  ' if attacking_move else ''
+    
+    if pos == (0,0):
+        print(f" # || Selecionado: {EXTRA}[NENHUM]")
+        return
+    
+    i, j = pos
+    
+    if (PART is None):
+        ITEM_SELECTION = "[00]"
+        
+    elif (PART != db.space):   
+        NAME = db.get_Key_byDictValue(db.PARTID, PART)
+        ICON_PART = db.PART[TEAM][PART]
+        
+        ATTACK = '🗡' if attacking_move else ''
+        
+        ITEM_SELECTION = f"{ATTACK} {NAME} ({ICON_PART})"
+        
+    else:
+        ITEM_SELECTION = f"[{COO_LETTERS[i]}{j}]"
+    
+    
+    print(f" # || Selecionado: {EXTRA}{ITEM_SELECTION}")
 
 genera.set_InitialPiecesTable()
-view_table()
+view_table(show_turn=True, attack_move=True)
 # for i in range(1,db.game_Xlenght):
 #     for j in range(1,db.game_Ylenght):
 #         print(db.get_Key_byDictValue(db.PARTID,db.TABLE[i][j]['part']),end=", ")
