@@ -18,6 +18,16 @@ def getCooFocused():
     
     return db.FOCUS_POS
 
+# pegar identificador da peça pelo time e posição
+def get_id_part(team, y, x):
+    GROUP = db.PART_TEAM[team]
+    for KEYID in GROUP:
+        
+        PART = GROUP[KEYID]
+        
+        if (PART['coo'] == (y, x)):
+            return KEYID
+
 # pegar peça que está na casa do TABLE que coicide com o SELECT que está com focusSELECT
 def getPartANDteamFocused():
     i, j = getCooFocused()

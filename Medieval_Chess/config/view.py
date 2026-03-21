@@ -31,10 +31,10 @@ def view_table(show_turn=False, attack_move=False):
     print(top)
     
     # analisar TABLE (i linha x j coluna)
-    for i in range(1, db.game_Xlenght):
+    for i in range(1, db.game_Ylenght):
         # criar uma lista das casas a serem mostradas
         board = []
-        for j in range(1, db.game_Ylenght):
+        for j in range(1, db.game_Xlenght):
             
             SQUARE = TABLE[i][j]
             

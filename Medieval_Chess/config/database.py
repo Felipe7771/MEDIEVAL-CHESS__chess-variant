@@ -1,3 +1,9 @@
+def get_Key_byDictValue(dict, value):
+    for key, val in dict.items():
+        if val == value:
+            return key
+    return None # Retorna None se não encontrar
+
 # Identificadores
 # base de dados para coorelação de peças e espaços dentro do código
 TEAMID = {
@@ -18,11 +24,6 @@ PARTID = {
     'king':100,
 }
 
-def get_Key_byDictValue(dict, value):
-    for key, val in dict.items():
-        if val == value:
-            return key
-    return None # Retorna None se não encontrar
 
 # NOMES DE UTILIZAÇÃO
 # Identificadores práticos do código a partir da base de dados
@@ -39,7 +40,6 @@ prince= PARTID['prince']
 rook  = PARTID['rook']
 queen = PARTID['queen']
 king  = PARTID['king']
-
 
 MATERIAL = {
     space:    0,
@@ -76,9 +76,11 @@ PART_MOVES_UNIT = {
           ],
 
     # Prince: 1 horizontal + 2 vertical
-    prince: [( 1,-1),( 1, 0),( 1, 1),
-             ( 0,-1),        ( 0, 1),
-             (-1,-1),(-1, 0),(-1, 1)],
+    # a divisão de movimentos só foi aplicada porque a vertical move em 2 e o horizontal em 1
+    prince: [
+            [( 1, 0),( 0,-1),(-1, 0),( 0, 1)], # horizontal
+            [( 1,-1),( 1, 1),(-1,-1),(-1, 1)]  # vertical
+          ],
     
     # Torre: Horizontal
     rook: [( 1, 0),( 0,-1),(-1, 0),( 0, 1)],
@@ -96,14 +98,25 @@ PART_MOVES_UNIT = {
 }
 
 REPLAY = {
-    'replay1':{},
-    'replay2':{},
+    'before_move':{},
+    'before_second_move':{},
+}
+
+QUANT_MOVES = {
+    white: 0,
+    black: 0
 }
 
 XEQUE = {
     white: False,
     black: False
 }
+
+PART_TEAM = {
+    white:{},
+    black:{}
+}
+# 'id': {part: '', attacks: 0, moves: 0, coo: (x, y)}
 
 # O tabuleiro possui 2 espaços a mais de linha e coluna para conter areas mortas do jogo para não ocorrer erros de indice fora da lista
 TABLE = [[
@@ -114,7 +127,20 @@ TABLE = [[
     } 
     for _ in range(10)] for _ in range(10)]
 
+table_Ylenght = len(TABLE)
+table_Xlenght = len(TABLE[0])
+
+game_Ylenght = table_Xlenght-1
+game_Xlenght = table_Ylenght-1
+
 COMBAT = [[
+    {
+        white:{},
+        black:{}
+    }
+    for _ in range(10)] for _ in range(10)]
+
+MOVE = [[
     {
         white:{},
         black:{}
@@ -139,16 +165,7 @@ VIEW_SELECT = {
 
 FOCUS_POS = None
 
-QUANT_MOVES = {
-    white: 0,
-    black: 0
-}
 
-table_Xlenght = len(TABLE)
-table_Ylenght = len(TABLE[0])
-
-game_Xlenght = table_Xlenght-1
-game_Ylenght = table_Ylenght-1
 
 # # 1: selecinando (→ ←)  2: pré-selecionado ([ ])
 # selection = [[0 for _ in range(10)] for _ in range(10)]
@@ -162,11 +179,10 @@ game_Ylenght = table_Ylenght-1
 #     5:['<','>'],
 # }
 
-PART_TEAM = {
-    white:[],
-    black:[]
+
+PART_INDEX = {
+    
 }
-# {id: '',part: '', attacks: 0, y: '', x: ''}
 
 NAME_PLAYERS = {
     white:'',

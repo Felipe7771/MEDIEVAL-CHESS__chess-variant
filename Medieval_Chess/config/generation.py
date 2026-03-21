@@ -76,22 +76,21 @@ def get_idPart(part, index_add_quant):
  
 # 6. Setar material, time e peça em TABLE
 def set_partToTable(team, part, position):
-    x, y = position
-    db.TABLE[x][y]['material'] = db.MATERIAL[part]
-    db.TABLE[x][y]['team'] = team
-    db.TABLE[x][y]['part'] = part
+    y, x = position
+    db.TABLE[y][x]['material'] = db.MATERIAL[part]
+    db.TABLE[y][x]['team'] = team
+    db.TABLE[y][x]['part'] = part
 
 # 11. Setar a equipe em PART_TEAM inicialmente
 def set_initial_PartTeam(team, id, part, position):
-    x, y = position
     DATA_PART = {
-        'id': id,
         'part': part,
         'attacks': 0,
-        'y': y,
-        'x': x
+        'moves': 0,
+        'coo': position
     }
-    db.PART_TEAM[team].append(DATA_PART)
+    
+    db.PART_TEAM[team][str(id)] = DATA_PART
 
 # setar dados ao replay para salvar estados antigos
 def set_replay(replay):
