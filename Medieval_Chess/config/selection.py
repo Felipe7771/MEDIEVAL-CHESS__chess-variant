@@ -34,9 +34,14 @@ def getPartANDteamFocused():
     return db.TABLE[i][j]['part'], db.TABLE[i][j]['team']
 
 def getKing(TEAM):
-    DATA = db.PART_TEAM[TEAM]
+    ID_KING_TEAM = db.ID_KING[TEAM]
+    DATA = db.PART_TEAM[TEAM].get(ID_KING_TEAM)
     
-    return (DATA['x'], DATA['y'])
+    return DATA['coo']
+
+# retorna se aquela peça ainda existe
+def has_part(TEAM, ID_PART):
+    return ID_PART in db.PART_TEAM[TEAM]
 
 def focusKing(TEAM):
     i, j = getKing(TEAM)
@@ -44,3 +49,31 @@ def focusKing(TEAM):
     
 def get_enemy(TEAM):
     return db.black if TEAM == db.white else db.white
+
+# pegar uma lista de tuplas das coordenadas das peças aliadas
+def get_Listcoo_PartsTeam(TEAM):
+    return [COO.get('coo') for COO in db.PART_TEAM[TEAM].values() if 'coo' in COO]
+
+# pegar uma lista de tuplas das coordenadas das casas de movimento da peça
+def get_Listcoo_MovePart(ID_PART, TEAM):
+    SPACES = []
+    for i, ROW in enumerate(db.MOVE): # matriz
+        for j, CELL in enumerate(ROW):  # cada célula
+            
+            for SPACE in CELL[TEAM]:# lista dentro da célula
+                if (
+                    isinstance(SPACE, dict)
+                    and SPACE.get('id') == ID_PART
+                ):
+                    SPACES.append((i, j))
+
+    return SPACES
+
+# limpar seleção
+def empty_selection():
+    SELECT_BASE = db.SELECT
+    
+    for y in range(len(SELECT_BASE)):
+        for x in range(len(SELECT_BASE)):
+            
+            db.SELECT[y][x] = db.noSELECT

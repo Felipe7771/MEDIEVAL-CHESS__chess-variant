@@ -92,6 +92,11 @@ def set_initial_PartTeam(team, id, part, position):
     
     db.PART_TEAM[team][str(id)] = DATA_PART
 
+# setar status do replay
+def Replay(replay):
+    empty_allReplay()
+    set_replay(replay)
+
 # setar dados ao replay para salvar estados antigos
 def set_replay(replay):
     db.REPLAY[replay] = copy.deepcopy({

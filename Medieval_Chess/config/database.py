@@ -41,16 +41,34 @@ rook  = PARTID['rook']
 queen = PARTID['queen']
 king  = PARTID['king']
 
+UP=1
+DOWN=2
+LEFT=3
+RIGHT=4
+
 MATERIAL = {
     space:    0,
     pawn:     1,
     knight:   3,
     bishop:   3,
     jester:   4,
-    prince:   5,
+    prince:   7,
     rook:     5,
     queen:    9,
     king:     100,
+}
+
+ID_KING = {
+    white: '1001',
+    black: '1002'
+}
+ID_QUEEN = {
+    white: '91',
+    black: '92'
+}
+ID_PRINCE = {
+    white: '71',
+    black: '72'
 }
 
 PART_MOVES_UNIT = {
@@ -146,6 +164,8 @@ MOVE = [[
         black:{}
     }
     for _ in range(10)] for _ in range(10)]
+
+SELECTED_PART_COO = None
 
 SELECT = [[
     '' for _ in range(10)] for _ in range(10)]

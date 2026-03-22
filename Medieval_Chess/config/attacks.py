@@ -3,7 +3,9 @@ import selection as select
 
 # verificar se a casa de ataque coincide com o rei inimigo
 def is_AttackKing(CELL, ENEMY):
-    return CELL['team'] == ENEMY and CELL['part'] == db.king
+    ID = db.ID_PRINCE[ENEMY]
+    
+    return select.has_part(ENEMY, ID) and CELL['team'] == ENEMY and CELL['part'] == db.king
 
 # adicionar casa de ataque no COMBAT
 # junto a informações da peça atacante e onde se localiza
@@ -15,8 +17,7 @@ def add_ACTION(ID_PART, NEW_COO, PART, TEAM, INITIAL_COO, ATTACK=True, WALK=True
     ADD_PART = {
         'id': ID_PART,
         'part': PART, 
-        'y':iy, 
-        'x':ix
+        'coo': (iy, ix)
     }
     
     if (ATTACK):
@@ -121,7 +122,6 @@ def set_Pawn_ATTACK(ID_PART, COO, PART, TEAM, MOVES):
     db.PART_TEAM[TEAM][ID_PART]['attacks'] = TOTAL_ATTACKS
     db.PART_TEAM[TEAM][ID_PART]['moves']   = TOTAL_MOVES
 
-
 def set_OneStep_ATTACK(ID_PART, COO, PART, TEAM, MOVES):
     ENEMY = select.rtn_enemy(TEAM)
     iy, ix = COO
@@ -157,8 +157,7 @@ def set_OneStep_ATTACK(ID_PART, COO, PART, TEAM, MOVES):
         add_ACTION(ID_PART, (y, x), PART, TEAM, COO)
         
     db.PART_TEAM[TEAM][ID_PART]['attacks'] = TOTAL_ATTACKS
-    db.PART_TEAM[TEAM][ID_PART]['moves']   = TOTAL_MOVES
-        
+    db.PART_TEAM[TEAM][ID_PART]['moves']   = TOTAL_MOVES       
             
 def set_RayCast_ATTACK(ID_PART, COO, PART, TEAM, MOVES, QUANT_MOVES=8):
     ENEMY = select.rtn_enemy(TEAM)

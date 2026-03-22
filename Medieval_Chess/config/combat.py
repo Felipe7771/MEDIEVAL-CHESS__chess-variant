@@ -1,6 +1,7 @@
 import database as db
 import selection as select
 import attacks as attck
+import generation as genera
 
 # lista de times geral
 TEAMS = [db.white, db.black]
@@ -47,6 +48,34 @@ def set_empty_COMBAT():
     db.COMBAT = EMPTY
     db.MOVE  = EMPTY
 
+def check_KingANDQueen():
+# se o REI ou RAINHA estão mortos, se tiver PRINCIPE, transforme ele em um deles
+    for TEAM in TEAMS:
+        PRINCE_ID = db.ID_PRINCE[TEAM]
+        if (select.has_part(TEAM, PRINCE_ID)):
+            
+            KING_ID = db.ID_KING[TEAM]
+            QUEEN_ID = db.ID_QUEEN[TEAM]
+            
+            # Verificar REI
+            if (select.has_part(TEAM, KING_ID)):
+                
+                DATA_PRINCE = db.PART_TEAM[TEAM][PRINCE_ID]
+                DATA_PRINCE['part'] = db.king
+                
+                remove_Deadpiece(TEAM, PRINCE_ID)
+                # adiciona no lugar do principe um novo rei
+                db.PART_TEAM[TEAM][KING_ID] = DATA_PRINCE
+              
+            # Verificar RAINHA  
+            elif (select.has_part(TEAM, QUEEN_ID)):
+                DATA_PRINCE = db.PART_TEAM[TEAM][PRINCE_ID]
+                DATA_PRINCE['part'] = db.queen
+                
+                remove_Deadpiece(TEAM, PRINCE_ID)
+                # adiciona no lugar do principe um novo rei
+                db.PART_TEAM[TEAM][QUEEN_ID] = DATA_PRINCE
+    
 # 4. para cada peça:
 #   - calcular ataques
 #   - salvar no COMBAT
@@ -66,6 +95,9 @@ def set_COMBAT():
     
     # filtrar peças vivas no tabuleiro
     check_alive_Table_PartTeam()
+    
+    # verificar se o principe deve se transformar
+    check_KingANDQueen()
     
     # limpar a tabela COMBAT
     set_empty_COMBAT()
@@ -103,3 +135,43 @@ def set_ATTACK_places_COMBAT(ID_PART, PACKET_PART, TEAM, Jester_secondMove=False
     # Demais peças que andam livremente nas suas direções
     else:
         attck.set_RayCast_ATTACK(ID_PART, COO, PART, TEAM, MOVES,QUANT_MOVES=8)
+        
+def check_illegal_moviment(TEAM):
+    
+    set_COMBAT()
+    return db.XEQUE[TEAM]
+    
+def do_movePart(COO_MOVE, TEAM, JESTER=False):
+    
+    i, j = COO_MOVE
+    y, x = db.SELECTED_PART_COO
+    
+    # salvar status do jogo
+    genera.Replay('before_move')
+    
+    # executar movimento
+    db.TABLE[i][j] = {
+        'material': db.TABLE[y][x]['material'],
+        'team':     TEAM,
+        'part':     db.TABLE[y][x]['part']
+    }
+    
+    db.TABLE[y][x] = {
+        'material': db.space,
+        'team':     db.noteam,
+        'part':     db.space
+    }
+    
+    if (not JESTER):
+        if (check_illegal_moviment(TEAM)):
+            # retornar estado anterior
+            genera.return_state_dataReplay('before_move')
+            
+            # (...)
+        else:
+            # tudo certo, limpar replay e a seleção
+            db.SELECTED_PART_COO = None
+            
+            genera.empty_allReplay()
+            select.empty_selection()
+            
