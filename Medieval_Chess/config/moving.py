@@ -4,21 +4,26 @@ import database as db
 def update_partMoved_PartTeam(id, team, newy, newx):
     piece = db.PART_TEAM[team][id]
     piece['coo'] = (newy, newx)
-        
-# movimentar peça no TABLE
-def move_part(team, part, oldy, oldx, newy, newx):
-    # deletar peça no espaço antigo
-    db.TABLE[oldy][oldx] = {
+    
+def execute_Move(COO_BASE, COO_MOVE, TEAM):
+    
+    i, j = COO_MOVE
+    y, x = COO_BASE
+    
+    MATERIAL = db.TABLE[y][x]['material']
+    PART     = db.TABLE[y][x]['part'] 
+    
+    # executar movimento
+    db.TABLE[i][j] = {
+        'material': MATERIAL,
+        'team':     TEAM,
+        'part':     PART
+    }
+    
+    db.TABLE[y][x] = {
         'material': db.space,
         'team':     db.noteam,
         'part':     db.space
-    }
-    
-    # adicionar em novo espaço
-    db.TABLE[newy][newx] = {
-        'material': db.MATERIAL[part],
-        'team':     team,
-        'part':     part
     }
 
 # reorganiza opções de seleção a qual prioriza casas próximas á direção requirida em relação a casa pré-selecionada (i, j)

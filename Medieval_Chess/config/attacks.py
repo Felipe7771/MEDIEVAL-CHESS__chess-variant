@@ -7,8 +7,13 @@ def is_AttackKing(CELL, ENEMY):
     
     return select.has_part(ENEMY, ID) and CELL['team'] == ENEMY and CELL['part'] == db.king
 
+# ==================================================
+# Assignment of attacked squares in the COMBAT table    
+# ==================================================
 # adicionar casa de ataque no COMBAT
 # junto a informações da peça atacante e onde se localiza
+# --------------------------------------------------
+
 def add_ACTION(ID_PART, NEW_COO, PART, TEAM, INITIAL_COO, ATTACK=True, WALK=True):
     
     iy, ix = INITIAL_COO

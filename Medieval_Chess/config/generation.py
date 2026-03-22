@@ -17,7 +17,9 @@ arrengement_pieces = [
         db.knight, db.pawn
     ]
 ]
-
+# ==================================================
+# Instantiation of the Game Start for the Pieces
+# ==================================================
 # Definição de posicionamento de peças
 # 1. Definir id das peças para cada
 # 1.1 Salvar quantidades inseridas de cada peça no tabuleiro
@@ -32,6 +34,7 @@ arrengement_pieces = [
 # 10. ID = 'material' + quant.inserida
 # Setar material, time e peça em TABLE
 # 11. Setar a equipe em PART_TEAM inicialmente
+# ---------------------------------------------------
 
 def set_InitialPiecesTable():
     # salvar quantidade de peças adicionadas
@@ -91,6 +94,10 @@ def set_initial_PartTeam(team, id, part, position):
     }
     
     db.PART_TEAM[team][str(id)] = DATA_PART
+
+# ==================================================
+# Attributes of the REPLAY Control Variable
+# ==================================================
 
 # setar status do replay
 def Replay(replay):
@@ -161,6 +168,10 @@ def empty_allReplay():
                 db.white: 0
             }
         }
+
+# ==================================================
+# Other systems of generation
+# ==================================================
 
 # resetar jogo
 def reset_state():

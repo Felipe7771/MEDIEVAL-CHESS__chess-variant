@@ -1,8 +1,16 @@
+# ==================================================
+# Global function   
+# ==================================================
+
 def get_Key_byDictValue(dict, value):
     for key, val in dict.items():
         if val == value:
             return key
     return None # Retorna None se não encontrar
+
+# ==================================================
+# Identifiers for Global Names in the Code
+# ==================================================
 
 # Identificadores
 # base de dados para coorelação de peças e espaços dentro do código
@@ -24,6 +32,20 @@ PARTID = {
     'king':100,
 }
 
+UP=1
+DOWN=2
+LEFT=3
+RIGHT=4
+
+# variáveis de apoio de comunicação do código em indicar efeito gerado na tabela SELECT
+noSELECT=0
+focusSELECT=1
+noviewSELECTED=2
+viewSELECTED=3
+
+# ==================================================
+# Global Names
+# ==================================================
 
 # NOMES DE UTILIZAÇÃO
 # Identificadores práticos do código a partir da base de dados
@@ -41,22 +63,9 @@ rook  = PARTID['rook']
 queen = PARTID['queen']
 king  = PARTID['king']
 
-UP=1
-DOWN=2
-LEFT=3
-RIGHT=4
-
-MATERIAL = {
-    space:    0,
-    pawn:     1,
-    knight:   3,
-    bishop:   3,
-    jester:   4,
-    prince:   7,
-    rook:     5,
-    queen:    9,
-    king:     100,
-}
+# ==================================================
+# Part Identification Variables
+# ==================================================
 
 ID_KING = {
     white: '1001',
@@ -70,6 +79,155 @@ ID_PRINCE = {
     white: '71',
     black: '72'
 }
+
+# ==================================================
+# Parts Materials
+# ==================================================
+
+MATERIAL = {
+    space:    0,
+    pawn:     1,
+    knight:   3,
+    bishop:   3,
+    jester:   4,
+    prince:   7,
+    rook:     5,
+    queen:    9,
+    king:     100,
+}
+
+# ==================================================
+# Piece Boards, Attacks, Movement & Auxiliary Variables
+# ==================================================
+# O tabuleiro possui 2 espaços a mais de linha e coluna para conter areas mortas do jogo para não ocorrer erros de indice fora da lista
+# --------------------------------------------------
+
+TABLE = [[
+    {
+        'material': space,
+        'team':     noteam,
+        'part':     space
+    } 
+    for _ in range(10)] for _ in range(10)]
+
+
+COMBAT = [[
+    {
+        white:{},
+        black:{}
+    }
+    for _ in range(10)] for _ in range(10)]
+
+MOVE = [[
+    {
+        white:{},
+        black:{}
+    }
+    for _ in range(10)] for _ in range(10)]
+
+table_Ylenght = len(TABLE)
+table_Xlenght = len(TABLE[0])
+
+game_Ylenght = table_Xlenght-1
+game_Xlenght = table_Ylenght-1
+
+# ==================================================
+# Selection Grid & Coordinates of the Selected Piece
+# ==================================================
+
+SELECT = [[
+    '' for _ in range(10)] for _ in range(10)]
+
+VIEW_SELECT = {
+    noSELECT:       ['',''],      # SEM SELEÇÃO
+    focusSELECT:    ['[',']'],    # EM FOCO
+    noviewSELECTED: ['',''],      # SELEÇÃO INVISÍVEL
+    viewSELECTED:['>',' '],    # SELEÇÃO VISÍVEL
+}
+
+SELECTED_PART_COO = None
+
+# ==================================================
+# Internal Gameplay Control Variables
+# ==================================================
+
+HAS_CAPTURE = False
+
+REPLAY = {
+    'before_move':{},
+    'before_second_move':{},
+}
+
+QUANT_MOVES = {
+    white: 0,
+    black: 0
+}
+
+XEQUE = {
+    white: False,
+    black: False
+}
+
+PART_TEAM = {
+    white:{},
+    black:{}
+}
+# 'id': {part: '', attacks: 0, moves: 0, coo: (x, y)}
+
+# ==================================================
+# Turn and Player Control Variables
+# ==================================================
+
+NAME_PLAYERS = {
+    white:'',
+    black:''
+}
+
+ID_TURN = 1
+
+TURNS = [
+    white,
+    black,
+    white
+]
+
+# Pontuação dos jogadores:
+SCORE_GAME = {
+    black: 0,
+    white: 0
+}
+
+# ==================================================
+# End-of-Game Messages
+# ==================================================
+
+TYPE_END ={
+    # O ITEM 0 SÓ EXISTE PARA EVITAR CONFLITO COM O CÓDIGO.
+    0: {
+        'name': '',
+        'description': ''
+    },
+    1: {
+        'name': 'AFOGAMENTO',
+        'description': 'o Rei do Inimigo NÃO está em xeque, MAS não tem nenhum movimento legal disponível.'
+    },
+    2: {
+        'name': 'REI CONTRA REI',
+        'description': 'Os dois jogadores só tem o Rei e não podem se atacar.'
+    },
+    3: {
+        'name': 'REI VS REI E BISPO',
+        'description': 'Um jogador tem apenas o Rei e o outro tem apenas o Rei e um Bispo, e não é possível dar xeque-mate.'
+    },
+    4: {
+        'name': 'REI VS REI E CAVALO',
+        'description': 'Um jogador tem apenas o Rei e o outro tem apenas o Rei e um Cavalo, e não é possível dar xeque-mate.'
+    }
+}
+
+# ==================================================
+# Unitary Movements of Pieces
+# ==================================================
 
 PART_MOVES_UNIT = {
     # Peão: ataca na diagonal 1 casa, anda para frente e para traz (nessa variante)
@@ -112,116 +270,11 @@ PART_MOVES_UNIT = {
     king: [( 1,-1),( 1, 0),( 1, 1),
            ( 0,-1),        ( 0, 1),
            (-1,-1),(-1, 0),(-1, 1)],
-    
 }
 
-REPLAY = {
-    'before_move':{},
-    'before_second_move':{},
-}
-
-QUANT_MOVES = {
-    white: 0,
-    black: 0
-}
-
-XEQUE = {
-    white: False,
-    black: False
-}
-
-PART_TEAM = {
-    white:{},
-    black:{}
-}
-# 'id': {part: '', attacks: 0, moves: 0, coo: (x, y)}
-
-# O tabuleiro possui 2 espaços a mais de linha e coluna para conter areas mortas do jogo para não ocorrer erros de indice fora da lista
-TABLE = [[
-    {
-        'material': space,
-        'team':     noteam,
-        'part':     space
-    } 
-    for _ in range(10)] for _ in range(10)]
-
-table_Ylenght = len(TABLE)
-table_Xlenght = len(TABLE[0])
-
-game_Ylenght = table_Xlenght-1
-game_Xlenght = table_Ylenght-1
-
-COMBAT = [[
-    {
-        white:{},
-        black:{}
-    }
-    for _ in range(10)] for _ in range(10)]
-
-MOVE = [[
-    {
-        white:{},
-        black:{}
-    }
-    for _ in range(10)] for _ in range(10)]
-
-SELECTED_PART_COO = None
-
-SELECT = [[
-    '' for _ in range(10)] for _ in range(10)]
-
-# variáveis de apoio de comunicação do código em indicar efeito gerado na tabela SELECT
-noSELECT=0
-focusSELECT=1
-noviewSELECTED=2
-viewSELECTED=3
-
-VIEW_SELECT = {
-    noSELECT:       ['',''],      # SEM SELEÇÃO
-    focusSELECT:    ['[',']'],    # EM FOCO
-    noviewSELECTED: ['',''],      # SELEÇÃO INVISÍVEL
-    viewSELECTED:['>',' '],    # SELEÇÃO VISÍVEL
-}
-
-FOCUS_POS = None
-
-
-
-# # 1: selecinando (→ ←)  2: pré-selecionado ([ ])
-# selection = [[0 for _ in range(10)] for _ in range(10)]
-
-# view_slc = {
-#     0:[' ',' '],
-#     1:['→','←'],
-#     2:['[',']'],
-#     3:['*','*'],
-#     4:['!','!'],
-#     5:['<','>'],
-# }
-
-
-PART_INDEX = {
-    
-}
-
-NAME_PLAYERS = {
-    white:'',
-    black:''
-}
-
-TURNS = [
-    white,
-    black,
-    white
-]
-
-ID_TURN = 1
-
-# Pontuação dos jogadores:
-SCORE_GAME = {
-    black: 0,
-    white: 0
-}
+# ==================================================
+# Part Design
+# ==================================================
 
 PART = {
     black: {
@@ -245,31 +298,5 @@ PART = {
         bishop: '♗',
         queen:  '♕',
         king:   '♔'
-    }
-}
-
-HAS_CAPTURE = False
-
-TYPE_END ={
-    # O ITEM 0 SÓ EXISTE PARA EVITAR CONFLITO COM O CÓDIGO.
-    0: {
-        'name': '',
-        'description': ''
-    },
-    1: {
-        'name': 'AFOGAMENTO',
-        'description': 'o Rei do Inimigo NÃO está em xeque, MAS não tem nenhum movimento legal disponível.'
-    },
-    2: {
-        'name': 'REI CONTRA REI',
-        'description': 'Os dois jogadores só tem o Rei e não podem se atacar.'
-    },
-    3: {
-        'name': 'REI VS REI E BISPO',
-        'description': 'Um jogador tem apenas o Rei e o outro tem apenas o Rei e um Bispo, e não é possível dar xeque-mate.'
-    },
-    4: {
-        'name': 'REI VS REI E CAVALO',
-        'description': 'Um jogador tem apenas o Rei e o outro tem apenas o Rei e um Cavalo, e não é possível dar xeque-mate.'
     }
 }

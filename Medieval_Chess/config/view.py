@@ -9,12 +9,17 @@ LINES_TURN = {
 
 COO_LETTERS = ["","a","b","c","d","e","f","g","h"]
 
+# ==================================================
+# Board View + Possible Move Options   
+# ================================================== 
 # VIZUALIZAR MAPA
 # perguntar tipo da visão:
 # only_map: apenas as peças no tabuleiro
 # choose_part: mapa + parte de texto do turno do jogador
 #                       tutorial de seleção
 #                       nome da peça + se possível movimento
+# --------------------------------------------------
+
 def view_table(show_turn=False, attack_move=False):
     ALLY = db.TURNS[db.ID_TURN]
     
@@ -177,6 +182,10 @@ def print_selection_describe(attacking_move):
     
     
     print(f" # || Selecionado: {EXTRA}{ITEM_SELECTION}")
+
+# ==================================================
+# Temporary Rendering  
+# ================================================== 
 
 genera.set_InitialPiecesTable()
 view_table(show_turn=True, attack_move=True)

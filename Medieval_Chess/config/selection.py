@@ -1,32 +1,26 @@
 import database as db
 import numpy as np
 
+# ==================================================
+# Piece Selection Methods and Initial King Selection    
+# ==================================================
+ 
 def setFocus(i, j):
     # remove antigo
-    if db.FOCUS_POS is not None:
-        old_i, old_j = db.FOCUS_POS
+    if db.SELECTED_PART_COO is not None:
+        old_i, old_j = db.SELECTED_PART_COO
         db.SELECT[old_i][old_j] = db.noSELECT
 
     # aplica novo
-    db.FOCUS_POS = (i, j)
+    db.SELECTED_PART_COO = (i, j)
     db.SELECT[i][j] = db.focusSELECT
 
 
 def getCooFocused():
-    if db.FOCUS_POS is None:
+    if db.SELECTED_PART_COO is None:
         return 0, 0
     
-    return db.FOCUS_POS
-
-# pegar identificador da peça pelo time e posição
-def get_id_part(team, y, x):
-    GROUP = db.PART_TEAM[team]
-    for KEYID in GROUP:
-        
-        PART = GROUP[KEYID]
-        
-        if (PART['coo'] == (y, x)):
-            return KEYID
+    return db.SELECTED_PART_COO
 
 # pegar peça que está na casa do TABLE que coicide com o SELECT que está com focusSELECT
 def getPartANDteamFocused():
@@ -39,16 +33,13 @@ def getKing(TEAM):
     
     return DATA['coo']
 
-# retorna se aquela peça ainda existe
-def has_part(TEAM, ID_PART):
-    return ID_PART in db.PART_TEAM[TEAM]
-
 def focusKing(TEAM):
     i, j = getKing(TEAM)
     setFocus(i, j)
-    
-def get_enemy(TEAM):
-    return db.black if TEAM == db.white else db.white
+
+# ==================================================
+# List of Coordinates for Selection    
+# ==================================================
 
 # pegar uma lista de tuplas das coordenadas das peças aliadas
 def get_Listcoo_PartsTeam(TEAM):
@@ -69,6 +60,10 @@ def get_Listcoo_MovePart(ID_PART, TEAM):
 
     return SPACES
 
+# ==================================================
+# Support functions for part selection, etc.   
+# ==================================================
+
 # limpar seleção
 def empty_selection():
     SELECT_BASE = db.SELECT
@@ -77,3 +72,22 @@ def empty_selection():
         for x in range(len(SELECT_BASE)):
             
             db.SELECT[y][x] = db.noSELECT
+            
+# pegar identificador da peça pelo time e posição
+def get_id_part(team, y, x):
+    GROUP = db.PART_TEAM[team]
+    for KEYID in GROUP:
+        
+        PART = GROUP[KEYID]
+        
+        if (PART['coo'] == (y, x)):
+            return KEYID
+
+
+# retorna se aquela peça ainda existe
+def has_part(TEAM, ID_PART):
+    return ID_PART in db.PART_TEAM[TEAM]
+
+    
+def get_enemy(TEAM):
+    return db.black if TEAM == db.white else db.white

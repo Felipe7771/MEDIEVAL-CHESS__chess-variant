@@ -2,6 +2,7 @@ import database as db
 import selection as select
 import attacks as attck
 import generation as genera
+import moving as mov
 
 # lista de times geral
 TEAMS = [db.white, db.black]
@@ -10,14 +11,19 @@ TEAMS = [db.white, db.black]
 def remove_Deadpiece(team, piece_id):
     if piece_id in db.PART_TEAM[team]:
         del db.PART_TEAM[team][piece_id]
-        
+
+# ==================================================
+# Standard analysis for setting up attacked squares       
+# ==================================================       
 # 1. verificar peças vivas (PART_TEAM vs TABLE)
 # 2. limpar/filtrar peças mortas
-# 3. limpar COMBAT
-# 4. para cada peça:
+# 3. Veridicar se o principe vai receber promoção
+# 4. limpar COMBAT
+# 5. para cada peça:
 #   - calcular ataques
 #   - salvar no COMBAT
 #   - atualizar attacks/moves no PART_TEAM
+#---------------------------------------------------
 
 # 1. verificar peças vivas (PART_TEAM vs TABLE)
 # 2. limpar/filtrar peças mortas
@@ -37,17 +43,8 @@ def check_alive_Table_PartTeam():
         for ID_PART in DEAD_PARTS:
             remove_Deadpiece(TEAM,ID_PART)
     
-# 3. limpar COMBAT        
-def set_empty_COMBAT():
-    EMPTY = [[
-    {
-        db.white:{},
-        db.black:{}
-    } for _ in range(10)] for _ in range(10)]
-    
-    db.COMBAT = EMPTY
-    db.MOVE  = EMPTY
 
+# 3. Veridicar se o principe vai receber promoção
 def check_KingANDQueen():
 # se o REI ou RAINHA estão mortos, se tiver PRINCIPE, transforme ele em um deles
     for TEAM in TEAMS:
@@ -76,11 +73,22 @@ def check_KingANDQueen():
                 # adiciona no lugar do principe um novo rei
                 db.PART_TEAM[TEAM][QUEEN_ID] = DATA_PRINCE
     
-# 4. para cada peça:
+# 4. limpar COMBAT        
+def set_empty_COMBAT():
+    EMPTY = [[
+    {
+        db.white:{},
+        db.black:{}
+    } for _ in range(10)] for _ in range(10)]
+    
+    db.COMBAT = EMPTY
+    db.MOVE  = EMPTY
+    
+# 5. para cada peça:
 #   - calcular ataques
 #   - salvar no COMBAT
 #   - atualizar attacks/moves no PART_TEAM
-def set_COMBAT():
+def set_COMBAT(JESTER):
     
     # Limpar movimentos possíveis e xeques, serão recalculados
     db.QUANT_MOVES = {
@@ -105,8 +113,13 @@ def set_COMBAT():
     for TEAM in TEAMS:
         for ID_PART, PACKET_PART in db.PART_TEAM[TEAM].items():
             #   - calcular ataques
-            set_ATTACK_places_COMBAT(ID_PART, PACKET_PART, TEAM)
-            
+            set_ATTACK_places_COMBAT(ID_PART, PACKET_PART, TEAM, JESTER)
+
+
+# ==================================================
+# Set calculation of attacked squares      
+# ================================================== 
+      
 def set_ATTACK_places_COMBAT(ID_PART, PACKET_PART, TEAM, Jester_secondMove=False):
     
     PART = PACKET_PART['part']
@@ -135,43 +148,78 @@ def set_ATTACK_places_COMBAT(ID_PART, PACKET_PART, TEAM, Jester_secondMove=False
     # Demais peças que andam livremente nas suas direções
     else:
         attck.set_RayCast_ATTACK(ID_PART, COO, PART, TEAM, MOVES,QUANT_MOVES=8)
+     
         
-def check_illegal_moviment(TEAM):
+# ==================================================
+# Practice a bid execution      
+# ================================================== 
     
-    set_COMBAT()
-    return db.XEQUE[TEAM]
-    
-def do_movePart(COO_MOVE, TEAM, JESTER=False):
-    
-    i, j = COO_MOVE
-    y, x = db.SELECTED_PART_COO
+def try_movePart(COO_BASE, COO_MOVE, ID_PART, TEAM, JESTER=False):
+    # Normalmente você vai querer que o COO_BASE seja as coodenadas da peça selecionada:
+    # db.SELECTED_PART_COO
     
     # salvar status do jogo
     genera.Replay('before_move')
     
-    # executar movimento
-    db.TABLE[i][j] = {
-        'material': db.TABLE[y][x]['material'],
-        'team':     TEAM,
-        'part':     db.TABLE[y][x]['part']
-    }
-    
-    db.TABLE[y][x] = {
-        'material': db.space,
-        'team':     db.noteam,
-        'part':     db.space
-    }
+    # executar o movimento da peça selecionada
+    mov.execute_Move(COO_BASE, COO_MOVE, TEAM)
     
     if (not JESTER):
         if (check_illegal_moviment(TEAM)):
             # retornar estado anterior
-            genera.return_state_dataReplay('before_move')
-            
-            # (...)
+            return invalid_move()
+        
         else:
             # tudo certo, limpar replay e a seleção
-            db.SELECTED_PART_COO = None
+            return valid_move()
+        
+    else:
+        # analise primeiro se o primeiro movimento é válido, já adiconando os possíveis movimentos do segundo lance
+        if (check_illegal_moviment(TEAM, JESTER)):
+            # retornar estado anterior
+            return invalid_move()
             
-            genera.empty_allReplay()
-            select.empty_selection()
+        else:
+            # verificar se os movimentos possíveis do segundo lançe são legais
+            COOS_SECOND_MOVE = select.get_Listcoo_MovePart(ID_PART, TEAM)
             
+            # se pelo menos tiver UM lançe legal, o segundo movimento pode ser feito
+            for COO in COOS_SECOND_MOVE:
+                # salvar status do novo tabuleiro
+                genera.Replay('before_second_move')
+                
+                mov.execute_Move(COO_MOVE, COO, TEAM)
+                
+                if (not check_illegal_moviment(TEAM, JESTER)):
+                    
+                    # retornar estado anterior do lance, existe um movimento legal
+                    genera.return_state_dataReplay('before_second_move')
+                    return valid_move()
+                    
+                else:
+                    # tente novamente
+                    genera.return_state_dataReplay('before_second_move')
+                
+            # se nenhum for válido, então é ilegal
+            return invalid_move()
+    
+def check_illegal_moviment(TEAM, JESTER=False):
+    
+    set_COMBAT(JESTER)
+    return db.XEQUE[TEAM]
+
+def invalid_move():
+    genera.return_state_dataReplay('before_move')
+            
+    # retorne que o movimento não pode ser realizado por ser inválido
+    return False
+
+def valid_move():
+    # tudo certo, limpar replay e a seleção
+    db.SELECTED_PART_COO = None
+    
+    genera.empty_allReplay()
+    select.empty_selection()
+    
+    # retorne que o movimento foi realizado com sucesso
+    return True
