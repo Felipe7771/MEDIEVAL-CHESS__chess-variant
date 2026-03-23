@@ -155,6 +155,7 @@ def print_turn_moviment(ALLY) -> None:
     print(f" # || TURNO DE '{NAME_PLAYER.upper()}' ({TIME})")
     
 def print_selection_describe(attacking_move: bool) -> None:
+    
     PART, TEAM = select.getPartANDteamFocused()
     pos = select.getCooFocused()
     

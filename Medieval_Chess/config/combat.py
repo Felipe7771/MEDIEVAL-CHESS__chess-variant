@@ -3,14 +3,10 @@ import selection as select
 import attacks as attck
 import generation as genera
 import moving as mov
+import methods as mth
 
 # lista de times geral
 TEAMS = [db.white, db.black]
-
-# remover peça morta do PART_TEAM
-def remove_Deadpiece(team, piece_id:str) -> None:
-    if piece_id in db.PART_TEAM[team]:
-        del db.PART_TEAM[team][piece_id]
 
 # ==================================================
 # Standard analysis for setting up attacked squares       
@@ -41,38 +37,8 @@ def check_alive_Table_PartTeam() -> None:
         
         # eliminar peças mortas do PART_TEAM
         for ID_PART in DEAD_PARTS:
-            remove_Deadpiece(TEAM,ID_PART)
-    
+            mth.remove_Deadpiece(TEAM,ID_PART)
 
-# 3. Veridicar se o principe vai receber promoção
-def check_KingANDQueen() -> None:
-# se o REI ou RAINHA estão mortos, se tiver PRINCIPE, transforme ele em um deles
-    for TEAM in TEAMS:
-        PRINCE_ID = db.ID_PRINCE[TEAM]
-        if (select.has_part(TEAM, PRINCE_ID)):
-            
-            KING_ID = db.ID_KING[TEAM]
-            QUEEN_ID = db.ID_QUEEN[TEAM]
-            
-            # Verificar REI
-            if (select.has_part(TEAM, KING_ID)):
-                
-                DATA_PRINCE = db.PART_TEAM[TEAM][PRINCE_ID]
-                DATA_PRINCE['part'] = db.king
-                
-                remove_Deadpiece(TEAM, PRINCE_ID)
-                # adiciona no lugar do principe um novo rei
-                db.PART_TEAM[TEAM][KING_ID] = DATA_PRINCE
-              
-            # Verificar RAINHA  
-            elif (select.has_part(TEAM, QUEEN_ID)):
-                DATA_PRINCE = db.PART_TEAM[TEAM][PRINCE_ID]
-                DATA_PRINCE['part'] = db.queen
-                
-                remove_Deadpiece(TEAM, PRINCE_ID)
-                # adiciona no lugar do principe um novo rei
-                db.PART_TEAM[TEAM][QUEEN_ID] = DATA_PRINCE
-    
 # 4. limpar COMBAT        
 def set_empty_COMBAT() -> None:
     EMPTY = [[
@@ -105,7 +71,7 @@ def set_COMBAT(JESTER: bool) -> None:
     check_alive_Table_PartTeam()
     
     # verificar se o principe deve se transformar
-    check_KingANDQueen()
+    mth.check_KingANDQueen()
     
     # limpar a tabela COMBAT
     set_empty_COMBAT()

@@ -1,5 +1,6 @@
 import database as db
 import numpy as np
+import methods as mth
 
 # ==================================================
 # Piece Selection Methods and Initial King Selection    
@@ -27,14 +28,19 @@ def getPartANDteamFocused():
     i, j = getCooFocused()
     return db.TABLE[i][j]['part'], db.TABLE[i][j]['team']
 
-def getKing(TEAM) -> tuple | None:
-    ID_KING_TEAM = db.ID_KING[TEAM]
-    DATA = db.PART_TEAM[TEAM].get(ID_KING_TEAM)
+def getKingCoo(TEAM) -> tuple | None:
     
+    DATA = getKing(TEAM)
+    
+    if DATA is None:
+        return None
     return DATA['coo']
 
+def getKing(TEAM) -> dict | None:
+    return db.PART_TEAM[TEAM].get(db.ID_KING)
+
 def focusKing(TEAM) -> None:
-    i, j = getKing(TEAM)
+    i, j = getKingCoo(TEAM)
     setFocus(i, j)
 
 # ==================================================
@@ -82,11 +88,6 @@ def get_id_part(team, y: int, x: int) -> str | None:
         
         if (PART['coo'] == (y, x)):
             return KEYID
-
-
-# retorna se aquela peça ainda existe
-def has_part(TEAM, ID_PART: str) -> bool:
-    return ID_PART in db.PART_TEAM[TEAM]
 
     
 def get_enemy(TEAM) -> bool:

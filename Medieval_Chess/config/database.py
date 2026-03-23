@@ -183,7 +183,7 @@ NAME_PLAYERS = {
     black:''
 }
 
-ID_TURN = 1
+ID_TURN = 0
 
 TURNS = [
     white,
