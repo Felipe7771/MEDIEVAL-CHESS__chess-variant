@@ -20,7 +20,7 @@ COO_LETTERS = ["","a","b","c","d","e","f","g","h"]
 #                       nome da peça + se possível movimento
 # --------------------------------------------------
 
-def view_table(show_turn=False, attack_move=False):
+def view_table(show_turn=False, attack_move=False) -> None:
     ALLY = db.TURNS[db.ID_TURN]
     
     TABLE = db.TABLE
@@ -69,22 +69,22 @@ def view_table(show_turn=False, attack_move=False):
     print(bottom)
 
 # exibir casa
-def render_cell(piece, CELL_WIDTH):
+def render_cell(piece:str, CELL_WIDTH:int) -> str:
     return piece.center(CELL_WIDTH)
 
 # exibir linha a partir da lista das casas criadas
-def print_line(board, CELL_WIDTH):
+def print_line(board:list, CELL_WIDTH:int)-> None:
     line = '│' + '│'.join(render_cell(p,CELL_WIDTH) for p in board) + '│'
     
     print(line,end='')
 
 # exibir interceção entre as linha
-def print_middle_lines(i, middle):
+def print_middle_lines(i:int, middle:str) -> None:
     # se o número da coluna lida não for a última linha de TABLE, exiba a interceção
     if i < db.game_Xlenght - 1:
             print(middle,end='')
 
-def print_part(square_TABLE, i, j):
+def print_part(square_TABLE: dict, i:int, j:int)-> str:
     part = square_TABLE['part']
     team = square_TABLE['team']
     
@@ -99,7 +99,7 @@ def print_part(square_TABLE, i, j):
 # se linha i+(j-1) e coluna j forem impares: espaço branco se vazio
 # senão: preto se vazio
 
-def print_space(i, j):
+def print_space(i: int, j: int) -> str:
     SQUARE = db.SELECT[i][j]
     # se linha i+(j-1) e coluna j forem impares: espaço branco se vazio
     # senão: preto se vazio
@@ -123,7 +123,7 @@ def print_space(i, j):
     
     return str(first+(part*2)+last)
 
-def print_show_turn(i, ALLY, attack_move):
+def print_show_turn(i: int, ALLY, attack_move: bool) -> None:
     lines = {
         'turn_moviment': {
             db.white: 7,
@@ -147,14 +147,14 @@ def print_show_turn(i, ALLY, attack_move):
     else:
         print()
 
-def print_turn_moviment(ALLY):
+def print_turn_moviment(ALLY) -> None:
     
     NAME_PLAYER = db.NAME_PLAYERS[ALLY]
     TIME = db.get_Key_byDictValue(db.TEAMID, ALLY)
     
     print(f" # || TURNO DE '{NAME_PLAYER.upper()}' ({TIME})")
     
-def print_selection_describe(attacking_move):
+def print_selection_describe(attacking_move: bool) -> None:
     PART, TEAM = select.getPartANDteamFocused()
     pos = select.getCooFocused()
     

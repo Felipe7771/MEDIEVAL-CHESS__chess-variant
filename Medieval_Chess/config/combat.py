@@ -8,7 +8,7 @@ import moving as mov
 TEAMS = [db.white, db.black]
 
 # remover peça morta do PART_TEAM
-def remove_Deadpiece(team, piece_id):
+def remove_Deadpiece(team, piece_id:str) -> None:
     if piece_id in db.PART_TEAM[team]:
         del db.PART_TEAM[team][piece_id]
 
@@ -27,7 +27,7 @@ def remove_Deadpiece(team, piece_id):
 
 # 1. verificar peças vivas (PART_TEAM vs TABLE)
 # 2. limpar/filtrar peças mortas
-def check_alive_Table_PartTeam():
+def check_alive_Table_PartTeam() -> None:
     
     for TEAM in TEAMS:
         DEAD_PARTS = []
@@ -45,7 +45,7 @@ def check_alive_Table_PartTeam():
     
 
 # 3. Veridicar se o principe vai receber promoção
-def check_KingANDQueen():
+def check_KingANDQueen() -> None:
 # se o REI ou RAINHA estão mortos, se tiver PRINCIPE, transforme ele em um deles
     for TEAM in TEAMS:
         PRINCE_ID = db.ID_PRINCE[TEAM]
@@ -74,7 +74,7 @@ def check_KingANDQueen():
                 db.PART_TEAM[TEAM][QUEEN_ID] = DATA_PRINCE
     
 # 4. limpar COMBAT        
-def set_empty_COMBAT():
+def set_empty_COMBAT() -> None:
     EMPTY = [[
     {
         db.white:{},
@@ -88,7 +88,7 @@ def set_empty_COMBAT():
 #   - calcular ataques
 #   - salvar no COMBAT
 #   - atualizar attacks/moves no PART_TEAM
-def set_COMBAT(JESTER):
+def set_COMBAT(JESTER: bool) -> None:
     
     # Limpar movimentos possíveis e xeques, serão recalculados
     db.QUANT_MOVES = {
@@ -120,7 +120,7 @@ def set_COMBAT(JESTER):
 # Set calculation of attacked squares      
 # ================================================== 
       
-def set_ATTACK_places_COMBAT(ID_PART, PACKET_PART, TEAM, Jester_secondMove=False):
+def set_ATTACK_places_COMBAT(ID_PART: str, PACKET_PART: dict, TEAM, Jester_secondMove=False) -> None:
     
     PART = PACKET_PART['part']
     COO = PACKET_PART['coo']
@@ -154,7 +154,7 @@ def set_ATTACK_places_COMBAT(ID_PART, PACKET_PART, TEAM, Jester_secondMove=False
 # Practice a bid execution      
 # ================================================== 
     
-def try_movePart(COO_BASE, COO_MOVE, ID_PART, TEAM, JESTER=False):
+def try_movePart(COO_BASE:tuple, COO_MOVE:tuple, ID_PART:str, TEAM, JESTER=False) -> bool:
     # Normalmente você vai querer que o COO_BASE seja as coodenadas da peça selecionada:
     # db.SELECTED_PART_COO
     
@@ -203,18 +203,18 @@ def try_movePart(COO_BASE, COO_MOVE, ID_PART, TEAM, JESTER=False):
             # se nenhum for válido, então é ilegal
             return invalid_move()
     
-def check_illegal_moviment(TEAM, JESTER=False):
+def check_illegal_moviment(TEAM, JESTER=False) -> bool:
     
     set_COMBAT(JESTER)
     return db.XEQUE[TEAM]
 
-def invalid_move():
+def invalid_move() -> False:
     genera.return_state_dataReplay('before_move')
             
     # retorne que o movimento não pode ser realizado por ser inválido
     return False
 
-def valid_move():
+def valid_move() -> True:
     # tudo certo, limpar replay e a seleção
     db.SELECTED_PART_COO = None
     

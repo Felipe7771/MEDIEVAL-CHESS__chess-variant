@@ -2,7 +2,7 @@
 # Global function   
 # ==================================================
 
-def get_Key_byDictValue(dict, value):
+def get_Key_byDictValue(dict:dict, value):
     for key, val in dict.items():
         if val == value:
             return key

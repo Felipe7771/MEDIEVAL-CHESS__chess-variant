@@ -2,7 +2,7 @@ import database as db
 import selection as select
 
 # verificar se a casa de ataque coincide com o rei inimigo
-def is_AttackKing(CELL, ENEMY):
+def is_AttackKing(CELL:dict, ENEMY) -> bool:
     ID = db.ID_PRINCE[ENEMY]
     
     return select.has_part(ENEMY, ID) and CELL['team'] == ENEMY and CELL['part'] == db.king
@@ -14,7 +14,7 @@ def is_AttackKing(CELL, ENEMY):
 # junto a informações da peça atacante e onde se localiza
 # --------------------------------------------------
 
-def add_ACTION(ID_PART, NEW_COO, PART, TEAM, INITIAL_COO, ATTACK=True, WALK=True):
+def add_ACTION(ID_PART:str, NEW_COO:tuple, PART, TEAM, INITIAL_COO:tuple, ATTACK=True, WALK=True) -> None:
     
     iy, ix = INITIAL_COO
     y, x = NEW_COO
@@ -31,7 +31,7 @@ def add_ACTION(ID_PART, NEW_COO, PART, TEAM, INITIAL_COO, ATTACK=True, WALK=True
     if (WALK):
         db.MOVE[y][x][TEAM].append(ADD_PART)
 
-def set_Jester_ATTACK(ID_PART, COO, PART, TEAM, MOVES, SECOND_MOVE):
+def set_Jester_ATTACK(ID_PART:str, COO:tuple, PART, TEAM, MOVES:list, SECOND_MOVE:bool) -> None:
     ENEMY = select.rtn_enemy(TEAM)
     iy, ix = COO
     
@@ -85,7 +85,7 @@ def set_Jester_ATTACK(ID_PART, COO, PART, TEAM, MOVES, SECOND_MOVE):
     db.PART_TEAM[TEAM][ID_PART]['attacks'] = TOTAL_ATTACKS
     db.PART_TEAM[TEAM][ID_PART]['moves']   = TOTAL_MOVES 
 
-def set_Pawn_ATTACK(ID_PART, COO, PART, TEAM, MOVES):
+def set_Pawn_ATTACK(ID_PART:str, COO:tuple, PART, TEAM, MOVES:list)-> None:
     ENEMY = select.rtn_enemy(TEAM)
     iy, ix = COO
         
@@ -127,7 +127,7 @@ def set_Pawn_ATTACK(ID_PART, COO, PART, TEAM, MOVES):
     db.PART_TEAM[TEAM][ID_PART]['attacks'] = TOTAL_ATTACKS
     db.PART_TEAM[TEAM][ID_PART]['moves']   = TOTAL_MOVES
 
-def set_OneStep_ATTACK(ID_PART, COO, PART, TEAM, MOVES):
+def set_OneStep_ATTACK(ID_PART:str, COO:tuple, PART, TEAM, MOVES:list)-> None:
     ENEMY = select.rtn_enemy(TEAM)
     iy, ix = COO
         
@@ -164,7 +164,7 @@ def set_OneStep_ATTACK(ID_PART, COO, PART, TEAM, MOVES):
     db.PART_TEAM[TEAM][ID_PART]['attacks'] = TOTAL_ATTACKS
     db.PART_TEAM[TEAM][ID_PART]['moves']   = TOTAL_MOVES       
             
-def set_RayCast_ATTACK(ID_PART, COO, PART, TEAM, MOVES, QUANT_MOVES=8):
+def set_RayCast_ATTACK(ID_PART:str, COO:tuple, PART, TEAM, MOVES:list, QUANT_MOVES=8)-> None:
     ENEMY = select.rtn_enemy(TEAM)
     iy, ix = COO
         
@@ -203,7 +203,7 @@ def set_RayCast_ATTACK(ID_PART, COO, PART, TEAM, MOVES, QUANT_MOVES=8):
     db.PART_TEAM[TEAM][ID_PART]['attacks'] = TOTAL_ATTACKS
     db.PART_TEAM[TEAM][ID_PART]['moves']   = TOTAL_MOVES 
     
-def get_all_spaces_attack(part_table, x, y):
+def get_all_spaces_attack(part_table:dict, x:int, y:int) -> list:
     spaces = []
     for j, row in enumerate(db.by):              # matriz
         for i, cell in enumerate(row):           # cada célula

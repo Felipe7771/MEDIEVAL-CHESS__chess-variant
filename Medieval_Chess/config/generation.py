@@ -36,7 +36,7 @@ arrengement_pieces = [
 # 11. Setar a equipe em PART_TEAM inicialmente
 # ---------------------------------------------------
 
-def set_InitialPiecesTable():
+def set_InitialPiecesTable() -> None:
     # salvar quantidade de peças adicionadas
     QUANT = {
         db.pawn:0,
@@ -74,18 +74,18 @@ def set_InitialPiecesTable():
             
             
 # 5. ID = 'material' + quant.inserida
-def get_idPart(part, index_add_quant):
+def get_idPart(part, index_add_quant:int) -> str:
     return str(db.MATERIAL[part]) + str(index_add_quant)
  
 # 6. Setar material, time e peça em TABLE
-def set_partToTable(team, part, position):
+def set_partToTable(team, part, position: tuple) -> None:
     y, x = position
     db.TABLE[y][x]['material'] = db.MATERIAL[part]
     db.TABLE[y][x]['team'] = team
     db.TABLE[y][x]['part'] = part
 
 # 11. Setar a equipe em PART_TEAM inicialmente
-def set_initial_PartTeam(team, id, part, position):
+def set_initial_PartTeam(team, id: str, part, position: tuple) -> None:
     DATA_PART = {
         'part': part,
         'attacks': 0,
@@ -100,12 +100,12 @@ def set_initial_PartTeam(team, id, part, position):
 # ==================================================
 
 # setar status do replay
-def Replay(replay):
+def Replay(replay:str) -> None:
     empty_allReplay()
     set_replay(replay)
 
 # setar dados ao replay para salvar estados antigos
-def set_replay(replay):
+def set_replay(replay: str) -> None:
     db.REPLAY[replay] = copy.deepcopy({
         'XEQUE': {
             db.white: db.XEQUE[db.white],
@@ -119,7 +119,7 @@ def set_replay(replay):
     })
 
 # retornar o estado do replay de volta ao jogo
-def return_state_dataReplay(replay):
+def return_state_dataReplay(replay: str) -> None:
     db.TABLE       = copy.deepcopy(db.REPLAY[replay]['TABLE'])
     db.COMBAT      = copy.deepcopy(db.REPLAY[replay]['COMBAT'])
     db.PART_TEAM  = copy.deepcopy(db.REPLAY[replay]['PART_TEAM'])
@@ -130,7 +130,7 @@ def return_state_dataReplay(replay):
     db.XEQUE[db.black] = db.REPLAY[replay]['XEQUE'][db.black]
     
 # limpar todo replay
-def empty_allReplay():
+def empty_allReplay() -> None:
     for replay in range(2):
         db.REPLAY[replay] = {
             'XEQUE': {
@@ -174,7 +174,7 @@ def empty_allReplay():
 # ==================================================
 
 # resetar jogo
-def reset_state():
+def reset_state() -> None:
     # poupar linhas de limpamento de dados com funções pré-feitas
     empty_allReplay()
     

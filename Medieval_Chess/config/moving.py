@@ -1,11 +1,11 @@
 import database as db
 
 # atualizar peça movida no PART_TEAM
-def update_partMoved_PartTeam(id, team, newy, newx):
+def update_partMoved_PartTeam(id: str, team, newy: int, newx: int) -> None:
     piece = db.PART_TEAM[team][id]
     piece['coo'] = (newy, newx)
     
-def execute_Move(COO_BASE, COO_MOVE, TEAM):
+def execute_Move(COO_BASE: tuple, COO_MOVE: tuple, TEAM) -> None:
     
     i, j = COO_MOVE
     y, x = COO_BASE
@@ -27,7 +27,7 @@ def execute_Move(COO_BASE, COO_MOVE, TEAM):
     }
 
 # reorganiza opções de seleção a qual prioriza casas próximas á direção requirida em relação a casa pré-selecionada (i, j)
-def get_coos_sorted_by_direction(COOS, i, j, direction):
+def get_coos_sorted_by_direction(COOS: list, i: int, j: int, direction) -> list:
     
     if direction == db.UP:
         # main = lambda t: t[0] < j
