@@ -94,6 +94,17 @@ The Pawn can now move and attack from behind, which can be very useful for formi
 
 ### New part: <br> ***`The Jester ✧`*** *(The court jester)*
 ---------
+*Jester is an eccentric piece compared to the others, always wanting to innovate in something that the others don't. Some are stiff and move orthogonally. Others are more relaxed on the diagonal. With a mere joke, he wanted to be both at the same time. Like a queen? No, something more interesting: to be able to **perform 2 moves in the same turn.** Who's laughing now? lol*
+
+As mentioned, unlike the others, the Jester makes two moves per bid.<br>
+Both of his moves allow him to move up to __`3 spaces freely.`__
+
+
+|Movements|Direction|Feature|
+|---------|---------|-------|
+|1st Movement|Orthogonal|You can capture parts.
+|2nd Movement|Diagonal|Just movement. __No capture.__
+
 
 <br>
 
