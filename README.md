@@ -94,18 +94,63 @@ The Pawn can now move and attack from behind, which can be very useful for formi
 
 ### New part: <br> ***`The Jester ✧`*** *(The court jester)*
 ---------
-*Jester is an eccentric piece compared to the others, always wanting to innovate in something that the others don't. Some are stiff and move orthogonally. Others are more relaxed on the diagonal. With a mere joke, he wanted to be both at the same time. Like a queen? No, something more interesting: to be able to **perform 2 moves in the same turn.** Who's laughing now? lol*
+*Jester is an eccentric piece compared to the others, always wanting to innovate in something that the others don't.* 
 
-As mentioned, unlike the others, the Jester makes two moves per bid.<br>
-Both of his moves allow him to move up to __`3 spaces freely.`__
+*Some are stiff and move orthogonally.* 
 
+*Others are more relaxed on the diagonal.*
 
-|Movements|Direction|Feature|
-|---------|---------|-------|
-|1st Movement|Orthogonal|You can capture parts.
-|2nd Movement|Diagonal|Just movement. __No capture.__
+*With a mere joke, he wanted to be both at the same time. Like a queen? No, something more interesting: to be able to **perform 2 moves in the same turn.***
+> Who's laughing now? **LOL**
 
+<br>
 
+As mentioned, unlike the other pieces, the Jester makes two moves per turn.<br>
+Both moves allow it to move up to __`2 spaces freely.`__<br>
+
+__For the first move__, he mimics a rook: __`he attacks orthogonally`__, like a mini-rook, to impress his older brother. <br>
+__For the second__, he mixes bishop + knight: __`he moves diagonally`__, BUT `NO CAPTURE`, and he __LOVES__ `jumping over pieces` in front of him
+
+<br>__In summary:__<br>
+__`JESTER ✧`__*: Two moves in one turn*
+|Movements|Direction|Feature|Number of active squares|
+|---------|---------|-------|:---------------------:|
+|1st Movement|Orthogonal|You can capture parts.|Until 2 squares|
+|2nd Movement|Diagonal|__No capture.__ Can jump pieces.|Until 2 squares|
+
+<br><br>
+_`"So... um... how does that illegal move—you know, leaving the king exposed...—work with the Jester? ...the one where it moves twice in the same turn??"`_
+<br>— You are wondering that, right...?<br>
+
+...No?<br>
+
+...Oh.<br>
+
+...Well, too bad. Let's take a look anyway:
+
+<br>
+
+### A simple way to put it:
+
+_If a move that leaves your king exposed is illegal, then **a completed move** that leaves your king exposed is illegal._
+
+<br>Therefore, for the Jester:
+
+It is **`the second move that determines legality, since it completes the sequence`**.
+<br>The first move is only provisional — it does not need to be legal on its own, as long as the final position is.
+
+In other words:
+
+> _A Jester may temporarily expose its king during the first move…
+—but if the second move does not resolve that, the entire action is illegal._
+
+<br>
+
+| 2nd Move Result | Consequence |
+|-------------------|-------------------------|
+| King exposed | ❌ Illegal move |
+| King safe | ✔️ Perfectly legal |
+| Everyone ends up exposed | __"Son, rethink that first move."__ |
 <br>
 
 ### New part: <br> ***`The Prince ♤`*** *(The successor)*
