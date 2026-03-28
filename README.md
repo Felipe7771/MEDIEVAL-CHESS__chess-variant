@@ -155,3 +155,54 @@ In other words:
 
 ### New part: <br> ***`The Prince ♤`*** *(The successor)*
 ---------
+*The Prince is the kingdom’s last hope,*
+
+*a realm that has been locked in endless black-and-white wars since the 6th century. Tired of it all, despite his limited combat training, it’s time for the new dynasty to ascend the throne:*
+
+*if the King falls, long live the new king! If the Queen falls, long live the new queen!*
+
+<br>
+
+The one who falls first will be the most interesting....
+
+<br><br>
+
+Regarding the above, the Prince is still a novice in combat, with only __`1 attack square on the orthogonal grid`__. <br>
+HOWEVER, his magic lies elsewhere: He receives a promotion when a member of the royal family dies, **being the first to die**. 
+
+- If the King is captured, `he is promoted to King`;
+- if the Queen is captured, `he is promoted to Queen`.
+
+<br>__In summary:__<br>
+__`PRINCE ♤`__*: One move orthogonal*
+|Part that dies first| Promotion|
+|---------|---------|
+|King|Prince ⭢ ♔ King|
+|Queen|Prince ⭢ ♕ Queen|
+
+<br><br>
+_`"So... Hey, here I am... again... How exactly is the checkmate... on the king... going to... work... with... um... this Prince?"`_
+<br>— I highly doubt you didn't ask about it **—admit it!** <br>
+
+<br>
+
+### A simple way to put it:
+
+_If you have a live Prince, the game (at least the system described below) __<br>WON'T <br>GIVE <br>A <br>DAMN__ <br>if the king is in check, checkmate, or anything else..._
+
+<br>_but if you don't... <br>or if it's already been promoted to a queen..._
+
+<br><br>
+
+> _**run for your life.**_
+
+<br>
+
+In other words:
+
+| Prince ♤ | King Under Attack |
+|-------------------|-------------------------|
+| Alive | "Just one piece under attack—it doesn't matter" |
+| Dead | __RUN AWAY__ |
+| Promoted to Queen | __RUN AWAY__ |
+<br>
